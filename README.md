@@ -1,368 +1,98 @@
 # Processo Seletivo – Intensivo Maker | IoT
 
-## Etapa Prática – Sistemas Embarcados
+## Identificação do Candidato
 
-Bem-vindo(a) à **etapa prática do processo seletivo para o Intensivo Maker | IoT**.
-
-Esta atividade tem como objetivo avaliar suas competências em **Sistemas Embarcados**, com foco em **organização de projeto, lógica de firmware e simulação de hardware**, a partir da aplicação prática dos conhecimentos adquiridos nos cursos EAD da etapa anterior.
-
-> **Objetivo principal**  
-> Avaliar sua capacidade de **planejar, estruturar e desenvolver** uma solução funcional de sistemas embarcados, seguindo boas práticas de engenharia.
-
----
-
-## Antes de Tudo
-
-Se você **nunca utilizou Git ou GitHub**, não se preocupe.  
-Siga atentamente os passos abaixo.
-
----
-
-### 1 - Criação de Conta no GitHub
-
-1. Acesse: <https://github.com>
-2. Clique em **Sign up**
-3. Crie sua conta gratuita seguindo as instruções da plataforma
-
-> O GitHub será utilizado para:
->
-> - Envio do seu projeto
-> - Versionamento do código
-> - Correção e validação automática via GitHub Actions
-
----
-
-### 2 - Instalação do Git
-
-O **Git** é a ferramenta responsável pelo controle de versões do seu código.
-
-### Windows
-
-Baixe e instale o **Git Bash**:  
-<https://git-scm.com/downloads>
-
-### Linux / macOS
-
-Verifique se o Git já está instalado:
-
-```bash
-git --version
-```
-
-> Caso não esteja, instale pelo gerenciador de pacotes do seu sistema.
-
-## Preparando o Ambiente
-
-Para desenvolver o desafio, você deverá criar uma cópia deste repositório no seu GitHub.
-
-### 1 - Fork do Repositório
-
-No canto superior direito desta página, clique em Fork
-
-<img width="219" height="45" alt="image" src="https://github.com/user-attachments/assets/5d629626-513a-445c-ba0f-e5bb3e225187" />
-
-Uma cópia do repositório será criada no seu perfil do GitHub
-
-> O Fork permite que você trabalhe de forma independente, sem alterar o repositório original do processo seletivo.
-
-### 2 - Clone do Repositório
-
-No repositório do seu Fork, clique em **<> Code**
-
-<img width="149" height="52" alt="image" src="https://github.com/user-attachments/assets/abbd331b-a005-4633-89c6-afd16acbe828" />
-
-Copie a URL e execute no terminal:
-
-```bash
-git clone https://github.com/SEU_USUARIO/nome-do-repositorio.git
-cd nome-do-repositorio
-```
-
-> O comando git clone cria uma cópia local do repositório para desenvolvimento.
-
-### 3 - Preparação do Ambiente de Execução
-
-Você pode executar o projeto de duas formas. Escolha apenas uma.
-
-#### Opção A – Ambiente Python Local
-
-**Requisitos:**
-
-- Python 3.10 ou 3.11
-- pip
-
-**Instale as dependências:**
-
-```bash
-pip install -r requirements.txt
-```
-
-#### Opção B – Dev Container (Recomendado)
-
-Este repositório inclui um Dev Container, garantindo um ambiente padronizado.
-
-**Requisitos:**
-
-- VS Code
-- Docker instalado
-- Extensão Dev Containers
-
-**Passos:**
-
-1. Abra o repositório no VS Code
-2. Clique em “Reopen in Container”
-3. Aguarde a criação automática do ambiente
-
-> Todas as dependências serão instaladas automaticamente.
-
-## Criando sua API Key do Wokwi
-
-A simulação do projeto será executada automaticamente via GitHub Actions, utilizando o Wokwi CLI.
-
-Para isso, você precisa gerar uma API Key.
-
-1. Acesse: <https://wokwi.com/dashboard/ci>
-2. Faça login (Google ou GitHub)
-3. Clique em Generate API Token
-4. Copie a chave gerada (exemplo: wokwi-xxxxxxxx)
-
-> Importante
-
-- Nunca faça commit dessa chave
-- Ela deve ser armazenada apenas como secret no GitHub
-
-## Configurando a API Key no GitHub (Secrets)
-
-**No repositório do seu Fork:**
-
-1. Vá em Settings
-2. Acesse Secrets and variables → Actions
-3. Clique em New repository secret
-4. Nome: WOKWI_CLI_TOKEN
-5. Valor: sua chave gerada
-6. Salve
-
-> As GitHub Actions do template já estão preparadas para usar essa variável automaticamente.
-
-## Desafio Técnico
-
-Você deverá desenvolver um projeto de sistemas embarcados simulados, utilizando Python e Wokwi.
-
-### Estrutura mínima esperada
-
-```text
-/project
- ├── src/
- │   └── main.py        # Código principal do projeto
- ├── wokwi.toml         # Configuração da simulação
- ├── diagram.json       # Circuito no Wokwi
- └── README.md          # Explicação do seu projeto
-```
-
-> Você pode expandir essa estrutura se desejar, desde que mantenha os arquivos essenciais.
-
-### Escolha do cenário
-
-No diretório "scenarios" existem arquivos .md e pastas referentes a diferentes desafios. Selecione apenas um deles e mantenha apenas a pasta e .md referente ao desafio a ser desenvolvido, deletando os demais. Isso fará com o que o fluxo de testes automáticos selecione o fluxo de acordo com o desafio escolhido.
-
-### Como Desenvolver seu Projeto
-
-O desenvolvimento acontece principalmente nos arquivos abaixo:
-
-#### src/main.py
-
-- Código Python executado na simulação
-- Implementa a lógica do sistema embarcado
-- Exemplos: controle de LEDs, leitura de sensores, estados, temporizações, etc.
-
-#### diagram.json
-
-- Define o hardware virtual do projeto
-- Componentes como:
-  - LEDs
-  - Botões
-  - Sensores
-  - Placa microcontroladora
-
-#### wokwi.toml
-
-- Configura a simulação:
-  - Tipo de placa
-  - Framework
-  - Dependências adicionais
- 
-#### Rodando localmente
-
-Para executar o seu projeto locamente, é necesário preparar a imagem docker local, e após isso
-utiliza-la para gerar o arquivo que conterá o seu código para o projeto, para isso, execute os 
-seguintes códigos:
-
-1. Prepara a imagem docker (Necessário rodar apenas 1 vez)
-
-```bash
-docker build -t esp32-builder -f Dockerfile .
-```
-
-2. Prepara o arquivo de memória fs.bin (Necessário a cada iteração)
-
-```bash
-docker run --rm -v "$(pwd)/src:/mnt/src" -v "$(pwd):/mnt/out" esp32-builder bash -c "mkdir -p /tmp/fs && cp -r /mnt/src/* /tmp/fs/ && /mklittlefs/mklittlefs -c /tmp/fs -b 4096 -p 256 -s 0x200000 /mnt/out/fs.bin"
-```
-
-#### Commit e Push
-
-Após suas alterações:
-
-```bash
-git add .
-git commit -m "Descrição clara do que foi feito"
-git push
-```
-
-### Execução Automática (GitHub Actions)
-
-A cada push, o GitHub Actions irá automaticamente:
-
-- Executar o pipeline de build
-- Rodar a simulação via Wokwi CLI
-- Validar que o projeto executa sem erros
-
-### Caso algo falhe
-
-- Vá até a aba Actions
-- Analise os logs da execução
-- Corrija e envie novamente
-
-## Critérios de Avaliação
-
-Esta etapa será avaliada considerando:
-
-- Funcionamento correto da simulação
-- Código organizado e legível
-- Estrutura de arquivos correta
-- Uso adequado do Wokwi
-- Commits claros e bem descritos
-- Projeto executando sem falhas nas Actions
-
----
-
-## Submissão Final
-
-Após concluir o desenvolvimento:
-
-1. Verifique se o projeto **executa sem erros** nas GitHub Actions
-2. Confirme que todos os arquivos obrigatórios estão presentes
-3. Copie o link do **seu repositório no GitHub**
-
-Envie o link conforme as orientações do processo seletivo na plataforma do **PNAAT**.
-
----
-
-## Relatório do Candidato
-
-O arquivo **`README.md` do seu repositório** deve ser utilizado como o  
-**relatório final do desafio técnico**.
-
-Preencha todas as seções abaixo de forma **clara, objetiva e técnica**.
-
-> **Dica importante**  
-> Não é necessário um relatório extenso.  
-> O principal critério é demonstrar **clareza nas decisões técnicas**, organização e entendimento do sistema embarcado desenvolvido.
-> Não mantenha os demais conteúdos escritos nesse arquivo README, aqui devem ser concentradas apenas informações referentes ao projeto desenvolvido.
-
----
-
-### Identificação do Candidato
-
-- **Nome completo:**
-- **GitHub:**
-
----
+- **Nome completo:** Mateus Junior de Macedo Cavalcanti
+- **GitHub:** https://github.com/mateusjrcavalcanti
 
 ## Visão Geral da Solução
 
-Descreva, em poucas palavras:
-
-- Qual é o objetivo do seu projeto
-- O que o sistema embarcado simulado faz
-- Como o usuário interage com ele (se aplicável)
-
----
+Este projeto é um sistema de monitoramento para geladeiras, estufas ou painéis elétricos. A ideia é simples: usar um sensor de temperatura (MPU6050) e um botão que simula se a porta está fechada ou não. O sistema monitora duas condições ao mesmo tempo: se a porta ficou aberta por tempo excessivo e se a temperatura subiu de forma abrupta. Se algo der errado, ele emite um alerta pela Serial. Quando tudo volta ao normal, ele também avisa.
 
 ## Arquitetura do Sistema Embarcado
 
-Explique a arquitetura lógica do seu projeto, abordando:
+O código principal está no `main.py` e foi dividido em 5 funções para não concentrar toda a lógica em um único bloco. O programa executa um loop a cada 100ms — isso é importante para não travar e não perder os comandos que o simulador envia durante os testes.
 
-- Fluxo principal do programa (`main.py`)
-- Estrutura de estados, loops ou temporizações
-- Como os componentes interagem entre si
+### Como o programa funciona
 
-Se desejar, utilize tópicos ou um pequeno diagrama em texto.
+1. **Inicialização:** configura o I2C nos pinos 21 e 22 para comunicar com o MPU6050, configura o botão no pino 13 com pull-down interno, e envia a mensagem `"Sistema de Monitoramento Inicializado"`.
+2. **No loop principal:**
+   - Lê a temperatura. Se der erro na leitura, mantém a última temperatura válida em vez de travar.
+   - Verifica se a temperatura atual passou do limite de 3.0°C em relação à referência. Se passou e o alarme ainda não foi disparado, emite o alerta térmico.
+   - Verifica se o botão está solto (porta aberta). Se estiver, começa a contar o tempo. Se passar de 5 segundos, dispara o alarme de porta.
+   - Recalcula se está em alarme, verificando as duas flags depois dos blocos de verificação. Essa ordem é essencial: se calcular antes, o código pode achar que não está em alarme e atualizar a temperatura de referência com o valor do pico, fazendo o sistema normalizar sem motivo.
+   - Tenta normalizar: se estiver em alarme, a porta estiver fechada e a temperatura estiver dentro do limite seguro (< 3.0°C de variação), envia `"Status: Sistema Normalizado."` e redefine todos os valores.
+   - Se a porta estiver fechada e não estiver em alarme, atualiza a referência com a temperatura atual.
 
----
+### Funções do código
+
+- `ler_temperatura()` — lê o MPU6050 pelo I2C e converte o valor. Se falhar, retorna `None`.
+- `porta_esta_fechada()` — verifica se o botão está pressionado.
+- `verificar_alarme_termico(variacao, ja_disparado)` — compara a variação com o limite de 3.0°C.
+- `verificar_alarme_porta(inicio, tempo_atual, ja_disparado)` — controla o cronômetro da porta aberta.
+- `normalizar_sistema(...)` — decide se pode normalizar e retorna os valores atualizados.
+
+### Estados do sistema
+
+| Estado | Quando entra | O que faz |
+|---|---|---|
+| Normal | Inicialização ou depois de normalizar | Monitora e atualiza a referência |
+| Alarme de Porta | Porta aberta por 5s ou mais | Mostra `"ALERTA: Porta aberta por muito tempo!"` |
+| Alarme Térmico | Temperatura subiu 3.0°C ou mais | Mostra `"ALERTA: Degradacao termica detectada!"` |
+| Normalização | Porta fechada e temperatura voltou ao normal | Mostra `"Status: Sistema Normalizado."` e limpa os alarmes |
 
 ## Componentes Utilizados na Simulação
 
-Liste os principais componentes definidos no `diagram.json`, por exemplo:
+| Componente | ID | Função |
+|---|---|---|
+| ESP32 DevKit C v4 | `esp` | Placa que executa o firmware |
+| MPU6050 | `imu1` | Sensor de temperatura (I2C nos pinos 21 e 22) |
+| Pushbutton | `btn1` | Simula o sensor de porta (pino 13) |
+| Serial Monitor | `$serialMonitor` | Onde as mensagens de alerta aparecem |
 
-- Tipo de placa utilizada
-- LEDs, botões, sensores, atuadores, etc.
-- Função de cada componente no sistema
+## Decisões Técnicas
 
----
+**Loop sem bloqueio.** Usei `time.sleep_ms(100)` para dar tempo do simulador enviar os comandos entre uma verificação e outra. Se usasse `sleep(5)` por exemplo, o CI perderia a janela de trocar a temperatura e o teste falharia.
 
-## Decisões Técnicas Relevantes
+**Ordem das verificações importa.** Os alarmes são checados primeiro, e só depois que `em_alarme` é recalculado. Se fizesse ao contrário, na mesma rodada em que o alarme térmico disparasse, a referência seria atualizada para o valor do pico, e na rodada seguinte o sistema normalizaria achando que a temperatura está estável — mesmo estando ainda alta.
 
-Explique brevemente decisões importantes tomadas durante o desenvolvimento, como:
+**Pull-down no botão.** Conectei o botão no 3V3 e usei `Pin.PULL_DOWN`. Assim, quando o botão está pressionado o pino lê 1 (porta fechada), e quando está solto lê 0 (porta aberta). Isso corresponde exatamente ao que o teste espera: `pressed: 1` = fechada.
 
-- Organização do código
-- Uso de funções, estados ou constantes
-- Estratégias para temporização ou controle lógico
+**Proteção contra falha no sensor.** Coloquei try/except na leitura. Se o I2C falhar, a função retorna `None` e o programa mantém a última temperatura válida. Não trava.
 
----
+**Referência atualiza sozinha.** Enquanto está tudo normal e a porta fechada, a referência vai se ajustando à temperatura ambiente. Isso permite que o CI mude a temperatura base (ex: de 20°C para 24°C) e o alarme dispare pela variação.
+
+**Constantes no topo.** `LIMITE_TEMPO_PORTA_ABERTA` e `LIMITE_VARIACAO_TEMPERATURA` ficam nas primeiras linhas. Se precisar mudar os valores depois, não precisa procurar no meio do código.
+
+**Alarme só dispara uma vez.** As flags `alarme_porta_disparado` e `alarme_termico_disparado` impedem a repetição. Quando normaliza, elas são redefinidas e o alarme pode disparar novamente se algo acontecer.
 
 ## Resultados Obtidos
 
-Descreva o comportamento final do sistema:
+Os três testes do CI passaram e ainda executei mais oito situações extras por conta própria.
 
-- O que funciona corretamente
-- Quais requisitos foram atendidos
-- Resultado observado na simulação do Wokwi
+### Testes do Wokwi CI
 
----
+1. **Porta aberta:** o sistema aguarda exatamente 5 segundos antes de disparar o alarme. Antes disso, não dispara.
+2. **Subida de temperatura:** quando a temperatura vai de 20°C para 24°C, o alarme térmico dispara. E o sistema **não** normaliza enquanto a temperatura continua alta.
+3. **Volta ao normal:** depois de um alarme de porta, quando a porta fecha, o sistema mostra a mensagem de normalização.
 
-## Comentários Adicionais (Opcional)
+### Testes extras que executei
 
-Utilize este espaço para comentar, se desejar:
+| Situação | Resultado |
+|---|---|
+| Porta abre e fecha em menos de 5s | Não dispara alarme |
+| Variação de exatamente 3.0°C | Dispara alarme |
+| Variação de 2.9°C | Não dispara (está abaixo do limite) |
+| Porta aberta e temperatura alta ao mesmo tempo | Dispara os dois alarmes |
+| Fecha a porta mas temperatura continua alta | Não normaliza (precisa das duas condições) |
+| Depois de normalizar, temperatura sobe de novo | Alarme dispara outra vez |
+| Erro na leitura I2C | Não trava, usa a última temperatura |
+| Alarme térmico dispara, abre a porta, fecha a porta | Somente normaliza quando a temperatura também volta |
 
-- Dificuldades encontradas
-- Limitações da solução
-- Melhorias que você faria com mais tempo
-- Principais aprendizados durante o desafio
+## Comentários Adicionais
 
----
+A parte mais difícil foi acertar o timing entre a captura da temperatura de referência e os comandos que o CI envia. No começo eu tinha um bug: a referência era atualizada antes do alarme ser conferido, então quando a temperatura subia, o sistema normalizava no mesmo instante. Levei um tempo para perceber que era só uma questão de ordem das linhas no loop.
 
-> Este relatório faz parte da avaliação técnica.  
-> Clareza, objetividade e organização são tão importantes quanto o funcionamento do código.
+Com mais tempo disponível, eu colocaria um filtro de média nas leituras de temperatura — pegar as últimas 3 medições e tirar a média — para evitar alarme falso com ruído.
 
----
-
-## Especificação dos Testes Automatizados (Wokwi CI)
-
-Para que o projeto seja validado com sucesso na esteira de integração contínua (CI), o firmware escrito em MicroPython deve interagir corretamente com as leituras dos sensores descritos em cada cenário e enviar as mensagens de status exatas.
-
-### Requisitos Críticos de Implementação
-
-1. **Casamento Exato de Strings:** O Wokwi CI faz uma verificação estrita caractere por caractere. Se houver divergência em maiúsculas/minúsculas, acentuação ou falta de pontuação, o teste irá falhar.
-2. **Arquitetura Não-Bloqueante:** Evite o uso de funções bloqueantes. Elas podem fazer com que o firmware perca a janela de tempo em que o simulador altera o peso, quebrando a sincronia do teste automatizado.
-
----
-
-## Suporte
-
-Em caso de dúvidas:
-
-- Consulte o material dos cursos EAD
-- Leia atentamente este README
-- Analise os logs das GitHub Actions
-- Utilize os canais oficiais para contato com os instrutores
+O que mais aprendi nesse projeto foi a importância de não usar funções que travam o loop e de alinhar as strings exatamente como o teste espera. Qualquer letra maiúscula ou minúscula diferente já faz o CI reprovar.
